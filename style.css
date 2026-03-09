@@ -5,24 +5,23 @@
 
 :root {
   --sage:      #b8c5bf;
-  --sage-dark: #9eb0a8;
   --red:       #e83030;
   --yellow:    #d4e000;
   --green:     #7fe800;
   --dark:      #111111;
   --dark2:     #1a1a1a;
   --white:     #ffffff;
-  --off-white: #f4f4f0;
+  --dash:      rgba(0,0,0,0.25);
 
-  --font: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --font-size-base: 13px;
+  --font:  'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --mono:  'Courier New', Courier, monospace;
 }
 
 html { scroll-behavior: smooth; }
 
 body {
   font-family: var(--font);
-  font-size: var(--font-size-base);
+  font-size: 13px;
   line-height: 1.5;
   background: var(--dark);
   color: var(--dark);
@@ -34,28 +33,27 @@ a   { color: inherit; text-decoration: none; }
 
 /* ─────────────────────────────────────────────────────────
    § 1  BIO
+   Photo height = text height (no min-height on section)
 ───────────────────────────────────────────────────────── */
 .bio {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  min-height: 100vh;
+  /* NO min-height — photo matches text column height */
   background-color: var(--sage);
   position: relative;
   overflow: hidden;
 }
 
-/* left column */
 .bio__text {
   padding: 60px 50px 60px 60px;
   display: flex;
   flex-direction: column;
   gap: 28px;
-  z-index: 1;
 }
 
 .bio__name {
   font-size: clamp(32px, 4vw, 56px);
-  font-weight: 400;
+  font-weight: 300;
   letter-spacing: -0.5px;
   line-height: 1.05;
 }
@@ -80,17 +78,16 @@ a   { color: inherit; text-decoration: none; }
 .bio__contact {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 1px;
 }
 
 .bio__contact a {
-  font-weight: 600;
+  font-weight: 700;
   font-size: 13px;
   transition: opacity 0.2s;
 }
 .bio__contact a:hover { opacity: 0.6; }
 
-/* right column: photo */
 .bio__photo {
   position: relative;
   overflow: hidden;
@@ -104,231 +101,261 @@ a   { color: inherit; text-decoration: none; }
   filter: contrast(1.05);
 }
 
-/* green accent stripes (top-right corner in design) */
+/* neon accent stripes top-right */
 .bio__bg-accent {
   position: absolute;
-  top: 0;
-  right: 0;
-  width: 60px;
-  height: 100%;
+  top: 0; right: 0;
+  width: 44px; height: 100%;
   background: repeating-linear-gradient(
     to bottom,
-    var(--yellow) 0px,
-    var(--yellow) 6px,
-    transparent 6px,
-    transparent 12px
+    var(--yellow) 0px, var(--yellow) 5px,
+    transparent 5px, transparent 10px
   );
-  opacity: 0.7;
-  mix-blend-mode: multiply;
+  opacity: 0.8;
 }
 
 /* ─────────────────────────────────────────────────────────
    § 2  WORK EXPERIENCE
+   Sage bg · dashed borders · role at card bottom
+   Edu: title top-left / title bottom-right
 ───────────────────────────────────────────────────────── */
 .work {
-  background: var(--off-white);
-  padding: 0 60px 80px;
-}
-
-.work__heading {
+  background: var(--sage);
   padding: 0;
-  margin-bottom: 50px;
-  overflow: hidden;
 }
 
 .work__heading img {
   width: 100%;
   height: auto;
   display: block;
-  /* keep pixel art crisp */
   image-rendering: pixelated;
 }
 
-/* three companies */
+/* ── three companies ── */
 .work__grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 40px;
-  margin-bottom: 60px;
+  border-top: 1px dashed var(--dash);
+}
+
+.work__company {
+  display: flex;
+  flex-direction: column;
+  padding: 28px 32px 32px;
+  border-right: 1px dashed var(--dash);
+  font-family: var(--mono);
+}
+.work__company:last-child { border-right: none; }
+
+.work__company-top {
+  /* content that stays at top */
 }
 
 .work__company-name {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
-  margin-bottom: 4px;
+  font-family: var(--mono);
+  margin-bottom: 6px;
 }
 
 .work__company-desc {
   font-size: 12px;
-  margin-bottom: 4px;
-  color: #333;
+  line-height: 1.5;
+  margin-bottom: 8px;
+  font-family: var(--mono);
 }
 
 .work__years {
   font-size: 12px;
-  color: #555;
-  margin-bottom: 10px;
+  margin-bottom: 16px;
+  font-family: var(--mono);
 }
 
 .work__company ul {
   list-style: none;
   font-size: 12px;
-  line-height: 1.7;
-  color: #333;
+  line-height: 1.9;
+  font-family: var(--mono);
 }
 
-/* skills row */
-.work__skills {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 40px;
-  padding-top: 40px;
-  border-top: 1px solid #ccc;
-  margin-bottom: 50px;
+/* Role — pushed to card bottom */
+.work__role {
+  margin-top: auto;
+  padding-top: 32px;
+  font-family: var(--font);
+  font-size: clamp(16px, 1.8vw, 22px);
+  font-weight: 300;
+  line-height: 1.25;
 }
 
-.work__skill h4 {
-  font-size: 15px;
-  font-weight: 600;
-  line-height: 1.4;
-}
-
-/* education row */
+/* ── education / training ── */
 .work__edu-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 60px;
+  border-top: 1px dashed var(--dash);
+  min-height: 280px;
 }
 
-.work__edu-block h4 {
-  font-size: 15px;
-  font-weight: 600;
-  margin-bottom: 14px;
+.work__edu-left {
+  display: flex;
+  flex-direction: column;
+  padding: 28px 32px 32px;
+  border-right: 1px dashed var(--dash);
 }
 
-.work__edu-block p {
+/* "Education" title stays at top */
+.work__edu-title {
+  font-size: clamp(22px, 2.2vw, 32px);
+  font-weight: 300;
+  line-height: 1.2;
+  margin-bottom: 0;
+}
+
+.work__edu-left .work__edu-title {
+  /* top of left column — default position */
+}
+
+.work__edu-dates {
   font-size: 12px;
-  line-height: 1.7;
+  line-height: 1.8;
   color: #333;
-  margin-bottom: 8px;
+  margin-top: 20px;
+}
+.work__edu-dates p { margin-bottom: 8px; }
+
+.work__edu-right {
+  display: flex;
+  flex-direction: column;
+  padding: 28px 32px 32px;
+}
+
+/* dates at top of right column */
+.work__edu-right .work__edu-dates { margin-top: 0; }
+
+/* "Additional Training" pushed to bottom of right column */
+.work__edu-right .work__edu-title {
+  margin-top: auto;
+  padding-top: 32px;
 }
 
 /* ─────────────────────────────────────────────────────────
    § 3  DEVELOPMENT
+   Same sage bg · desc TOP · image MIDDLE · title BOTTOM
 ───────────────────────────────────────────────────────── */
 .dev {
-  background: var(--dark);
-  padding: 0 60px 80px;
-  color: var(--white);
-}
-
-.dev__heading {
-  margin-bottom: 50px;
-  overflow: hidden;
+  background: var(--sage);
+  padding: 0;
+  color: var(--dark);
 }
 
 .dev__heading img {
   width: 100%;
   height: auto;
+  display: block;
   image-rendering: pixelated;
-  mix-blend-mode: screen;
+  /* no mix-blend-mode on light bg — natural transparent holes show sage */
 }
 
 .dev__grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
+  border-top: 1px dashed var(--dash);
 }
 
+.dev__card {
+  display: flex;
+  flex-direction: column;
+  padding: 24px 28px 28px;
+  border-right: 1px dashed var(--dash);
+}
+.dev__card:last-child { border-right: none; }
+
+/* description — TOP */
+.dev__card-desc {
+  font-size: 11px;
+  line-height: 1.7;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* image — MIDDLE (grows to fill space) */
 .dev__card img {
   width: 100%;
   aspect-ratio: 3/4;
   object-fit: cover;
-  margin-bottom: 14px;
-  filter: grayscale(20%);
-  transition: filter 0.3s;
-}
-.dev__card:hover img { filter: grayscale(0%); }
-
-.dev__card h3 {
-  font-size: 13px;
-  font-weight: 600;
-  margin-bottom: 8px;
+  flex-shrink: 0;
 }
 
-.dev__card p {
-  font-size: 11px;
-  line-height: 1.6;
-  color: #aaa;
+/* title — BOTTOM (large, light) */
+.dev__card-title {
+  margin-top: 16px;
+  font-size: clamp(20px, 2vw, 28px);
+  font-weight: 300;
+  line-height: 1.15;
+  color: var(--dark);
 }
 
 /* ─────────────────────────────────────────────────────────
    § 4  ART PROJECTS
+   Dark bg · same card pattern: desc TOP / img / label BOTTOM
 ───────────────────────────────────────────────────────── */
 .art {
   background: var(--dark2);
-  padding: 0 60px 0;
+  padding: 0;
   color: var(--white);
-}
-
-.art__heading {
-  overflow: hidden;
-  margin-bottom: 50px;
 }
 
 .art__heading img {
   width: 100%;
   height: auto;
+  display: block;
   image-rendering: pixelated;
   mix-blend-mode: screen;
 }
 
-/* top row: 4 cards */
-.art__grid--top {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-  margin-bottom: 20px;
-}
-
-/* bottom row: 8 cards (4+4) */
+.art__grid--top,
 .art__grid--bottom {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-  margin-bottom: 0;
+  border-top: 1px dashed rgba(255,255,255,0.2);
 }
+.art__grid--bottom { /* no extra margin */ }
 
 .art__card {
-  position: relative;
-  cursor: default;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 24px 24px;
+  border-right: 1px dashed rgba(255,255,255,0.2);
+}
+.art__card:last-child { border-right: none; }
+
+/* desc — TOP */
+.art__card-desc {
+  font-size: 11px;
+  line-height: 1.7;
+  color: #999;
+  margin-bottom: 16px;
 }
 
+/* image — MIDDLE */
 .art__card img {
   width: 100%;
   aspect-ratio: 3/4;
   object-fit: cover;
   filter: grayscale(30%) brightness(0.9);
   transition: filter 0.35s;
+  flex-shrink: 0;
 }
-
 .art__card:hover img {
   filter: grayscale(0%) brightness(1);
 }
 
-
+/* label — BOTTOM */
 .art__card-label {
   font-size: 13px;
   font-weight: 600;
-  margin-top: 10px;
+  margin-top: 12px;
   color: var(--white);
-}
-
-.art__card-desc {
-  font-size: 11px;
-  line-height: 1.6;
-  color: #888;
-  margin-top: 6px;
 }
 
 /* ─────────────────────────────────────────────────────────
@@ -342,7 +369,7 @@ a   { color: inherit; text-decoration: none; }
   font-weight: 700;
   letter-spacing: 0.08em;
   padding: 10px 0;
-  margin-top: 60px;
+  margin-top: 40px;
   white-space: nowrap;
 }
 
@@ -350,10 +377,7 @@ a   { color: inherit; text-decoration: none; }
   display: inline-flex;
   animation: ticker 30s linear infinite;
 }
-
-.art__ticker-track span {
-  padding-right: 40px;
-}
+.art__ticker-track span { padding-right: 40px; }
 
 @keyframes ticker {
   from { transform: translateX(0); }
@@ -363,44 +387,34 @@ a   { color: inherit; text-decoration: none; }
 /* ─────────────────────────────────────────────────────────
    RESPONSIVE
 ───────────────────────────────────────────────────────── */
-/* 4-col grids → 2-col at tablet */
 @media (max-width: 720px) {
+  .work__grid,
   .dev__grid,
   .art__grid--top,
   .art__grid--bottom {
     grid-template-columns: repeat(2, 1fr);
   }
-  .work__grid,
-  .work__skills {
-    grid-template-columns: 1fr 1fr;
-  }
+  .work__edu-row { grid-template-columns: 1fr; }
 }
 
-/* full mobile */
 @media (max-width: 480px) {
-  .bio {
-    grid-template-columns: 1fr;
-    min-height: auto;
-  }
-  .bio__photo {
-    height: 70vw;
-    order: -1;
-  }
-  .bio__text {
-    padding: 40px 20px;
-  }
-  .work,
-  .dev,
-  .art {
-    padding-left: 20px;
-    padding-right: 20px;
-  }
+  .bio { grid-template-columns: 1fr; }
+  .bio__photo { height: 70vw; order: -1; }
+  .bio__text { padding: 32px 20px; }
+
   .work__grid,
-  .work__skills,
   .work__edu-row,
   .dev__grid,
   .art__grid--top,
   .art__grid--bottom {
     grid-template-columns: 1fr;
+  }
+  .work__company,
+  .work__edu-left,
+  .work__edu-right,
+  .dev__card,
+  .art__card {
+    border-right: none;
+    border-bottom: 1px dashed var(--dash);
   }
 }
