@@ -198,9 +198,8 @@
       position: absolute;
       inset: 0;
       padding: 14px;
-      display: flex;
-      align-items: stretch;
-      justify-content: stretch;
+      display: block;
+      overflow: hidden;
       color: var(--accent);
       font-family: 'VT323', 'Courier New', monospace;
       text-align: justify;
@@ -221,12 +220,16 @@
       color: #E8E830;
       text-shadow: 0 0 1px rgba(232,232,48,0.5);
     }
+    .card-overlay-track {
+      display: block;
+      width: 100%;
+    }
     .card-overlay > span {
       display: block;
       width: 100%;
-      align-self: center;
-      /* fluid font size driven by JS via --ov-size */
       font-size: var(--ov-size, 11px);
+      white-space: pre-wrap;
+      word-break: normal;
     }
     @media (min-width: 768px) {
       .card-overlay { padding: 18px; }
@@ -267,6 +270,42 @@
       border-bottom: 1px dashed var(--border);
     }
     @media (min-width: 768px) { .work-cell { padding: 32px; } }
+    a.work-cell {
+      display: flex;
+      flex-direction: column;
+      color: inherit;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 240ms ease;
+    }
+    a.work-cell.eto-card {
+      transform-origin: left top;
+      transition: background 240ms ease;
+    }
+    a.work-cell.eto-card .role,
+    a.work-cell.eto-card .period,
+    a.work-cell.eto-card ul {
+      transition: transform 320ms cubic-bezier(.2,.7,.2,1);
+      transform-origin: left top;
+    }
+    a.work-cell.eto-card:hover {
+      background: rgba(255,255,255,0.04);
+    }
+    a.work-cell.eto-card:hover .role,
+    a.work-cell.eto-card:hover .period,
+    a.work-cell.eto-card:hover ul {
+      transform: scale(1.04);
+    }
+    a.work-cell.eto-card:hover .company { color: var(--accent); }
+    a.work-cell {
+      display: flex;
+      flex-direction: column;
+      color: inherit;
+      text-decoration: none;
+      transition: background 240ms ease;
+      cursor: pointer;
+    }
+    a.work-cell:hover { background: rgba(255,255,255,0.03); }
     .work-cell h3.company {
       font-size: clamp(28px, 2.6vw, 40px);
       font-weight: 300;
@@ -359,9 +398,6 @@
           <p class="bio-tagline reveal" style="--d:80ms">Media Artist / Developer/ Producer /</p>
 
           <div class="bio-blocks">
-            <div class="bio-block reveal" style="--d:160ms">
-              <p class="inline"><span class="lead">Lives and works: </span><span class="muted">Tbilisi, Georgia</span></p>
-            </div>
             <div class="bio-block reveal" style="--d:220ms">
               <p class="label">The main tools of the work:</p>
               <p class="value">Unity, UE, TouchDesigner, Figma, video Ai.</p>
@@ -411,8 +447,8 @@
       </div>
       <div class="work-grid">
         <div class="work-row three">
-          <div class="work-cell reveal">
-            <h3 class="company">“ETO”</h3>
+          <a class="work-cell reveal eto-card" href="https://janclopvandal.github.io/Eto_portfolio/" target="_blank" rel="noopener">
+            <h3 class="company snake-target" data-snake-text="“ETO”">“ETO”</h3>
             <p class="role">Technical lead / Art Director</p>
             <p class="period">2021 — 2025 · Studio development of AR / VR / Web / Mobile applications, games and multimedia installation.</p>
             <ul>
@@ -421,40 +457,16 @@
               <li>Recruitment of employees</li>
               <li>Communication with outsourcing team</li>
             </ul>
-          </div>
+          </a>
           <div class="work-cell reveal" style="--d:80ms">
-            <h3 class="company">“Artnovi”</h3>
-            <p class="role">C# Developer / Technical Artist</p>
-            <p class="period">2023 — 2024 · Art and technology Creative studio.</p>
-            <ul>
-              <li>C# / Unity Development</li>
-              <li>Event installation</li>
-              <li>Programing robots</li>
-              <li>Assembly of electronic components for robots</li>
-            </ul>
-          </div>
-          <div class="work-cell reveal" style="--d:160ms">
-            <h3 class="company">“Planetarium 1”</h3>
-            <p class="role">Unity / Touchdesigner developer and technical artist</p>
-            <p class="period">2019 — 2023 · Art and technology Creative studio.</p>
-            <ul>
-              <li>C# / Unity / Touchdesigner development stands and multimedia installation</li>
-              <li>Development of multimedia installations</li>
-              <li>Video engineering</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="work-row two">
-          <div class="work-cell reveal">
             <p class="eyebrow">Education</p>
             <div class="edu-stack">
               <div class="edu-item"><p class="t">New Media Laboratory, New Stage of Alexandrinsky Theatre, Saint Petersburg</p><p class="d">2020</p></div>
               <div class="edu-item"><p class="t">Workshop by Alexander Klygach: Real-time Control of Industrial Manipulators, Saint Petersburg</p><p class="d">2019</p></div>
             </div>
           </div>
-          <div class="work-cell reveal" style="--d:80ms">
-            <p class="eyebrow">Additional Training</p>
+          <div class="work-cell reveal" style="--d:160ms">
+            <p class="eyebrow">Teaching</p>
             <div class="training-stack">
               <p>AI in Animation course — 2023</p>
               <p>Base of Using Industrial Robots in Filmmaking, as part of New Media Art course, Sky University — 2022</p>
@@ -514,7 +526,7 @@
         a.innerHTML = `
           <div class="card-image">
             <img src="${p.image}" data-hi="${p.image.replace('images/', 'images/hi/')}" alt="${p.title}" loading="lazy" />
-            ${p.description ? `<div class="card-overlay"><span>${p.description}</span></div>` : ''}
+            ${p.description ? `<div class="card-overlay" data-text="${p.description.replace(/"/g, '&quot;')}"><span></span></div>` : ''}
           </div>
           <h3 class="card-title">${p.title}</h3>
         `;
@@ -540,20 +552,19 @@
       const probe = document.createElement('span');
       probe.style.cssText = "position:fixed;left:-99999px;top:0;visibility:hidden;white-space:nowrap;font-family:'VT323','Courier New',monospace;line-height:1.05;letter-spacing:0;";
       document.body.appendChild(probe);
-      const SAFETY = 0.94; // leave a tiny margin so antialiased edges never clip
+      const SAFETY = 0.94;
 
       document.querySelectorAll('.card-overlay').forEach(ov => {
         const span = ov.firstElementChild;
         if (!span) return;
-        const cw = ov.clientWidth;
+        const text = (ov.dataset.text || '').trim();
+        if (!text) return;
+        const cw = ov.clientWidth - 28;
         const ch = ov.clientHeight;
-        const text = (span.textContent || '').trim();
         const words = text.split(/\s+/);
         const longest = words.reduce((a, b) => a.length > b.length ? a : b, '');
 
-        // binary-search the largest size where:
-        //   1) the longest word fits on one line (≤ cw * SAFETY)
-        //   2) the wrapped block fits in ch
+        // largest size where longest word fits AND single copy of text fits in ch
         let lo = 8, hi = 220, best = lo;
         for (let i = 0; i < 14; i++) {
           const mid = (lo + hi) / 2;
@@ -562,9 +573,11 @@
           const wWidth = probe.getBoundingClientRect().width;
           if (wWidth > cw * SAFETY) { hi = mid; continue; }
           span.style.fontSize = mid + 'px';
+          span.textContent = text;
           if (span.scrollHeight <= ch) { best = mid; lo = mid; } else { hi = mid; }
         }
         span.style.fontSize = best + 'px';
+        span.textContent = text;
       });
       probe.remove();
     }
@@ -572,6 +585,89 @@
     window.addEventListener('resize', () => { clearTimeout(window.__ovT); window.__ovT = setTimeout(fitOverlays, 120); });
     // also after fonts settle
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitOverlays);
+
+    // ---------- Snake on standalone targets (e.g. ETO heading) ----------
+    (function snakeTargets() {
+      const TICK_MS = 90;
+      const STEP = 1;
+      const active = new Map();
+
+      function start(el) {
+        if (active.has(el)) return;
+        const raw = el.dataset.snakeText || el.textContent || '';
+        if (!raw) return;
+        const gap = '   ';
+        const buf = raw + gap + raw + gap;
+        let off = 0;
+        const period = raw.length + gap.length;
+        el.style.minWidth = el.getBoundingClientRect().width + 'px';
+        el.style.whiteSpace = 'pre';
+        const id = setInterval(() => {
+          off = (off + STEP) % period;
+          el.textContent = buf.slice(off, off + raw.length);
+        }, TICK_MS);
+        active.set(el, id);
+      }
+      function stop(el) {
+        const id = active.get(el);
+        if (id !== undefined) { clearInterval(id); active.delete(el); }
+        el.textContent = el.dataset.snakeText || '';
+        el.style.minWidth = '';
+        el.style.whiteSpace = '';
+      }
+
+      document.querySelectorAll('.snake-target').forEach(el => {
+        const host = el.closest('a, .work-cell') || el;
+        host.addEventListener('mouseenter', () => start(el));
+        host.addEventListener('mouseleave', () => stop(el));
+      });
+    })();
+
+    // ---------- Snake hover: rotate description text by 1 char ----------
+    (function snakeHover() {
+      const TICK_MS = 90;
+      const STEP = 1; // chars per tick
+      const active = new Map(); // ov -> {raw, offset, intervalId}
+
+      function start(ov) {
+        if (active.has(ov)) return;
+        const span = ov.firstElementChild;
+        if (!span) return;
+        const raw = ov.dataset.text || '';
+        if (!raw) return;
+        // double-buffer for seamless wrap
+        const buf = raw + '   ' + raw + '   ';
+        let off = 0;
+        const id = setInterval(() => {
+          off = (off + STEP) % (raw.length + 3);
+          // build rotated string
+          span.textContent = buf.slice(off, off + raw.length + 50);
+        }, TICK_MS);
+        active.set(ov, { id });
+      }
+      function stop(ov) {
+        const rec = active.get(ov);
+        if (rec) {
+          clearInterval(rec.id);
+          active.delete(ov);
+        }
+        const span = ov.firstElementChild;
+        if (span) span.textContent = ov.dataset.text || '';
+      }
+
+      document.addEventListener('mouseenter', e => {
+        const card = e.target.closest && e.target.closest('.card');
+        if (!card) return;
+        const ov = card.querySelector('.card-overlay');
+        if (ov) start(ov);
+      }, true);
+      document.addEventListener('mouseleave', e => {
+        const card = e.target.closest && e.target.closest('.card');
+        if (!card) return;
+        const ov = card.querySelector('.card-overlay');
+        if (ov) stop(ov);
+      }, true);
+    })();
 
     // ---------- Nav: scroll state + active section ----------
     const nav = document.getElementById('nav');
