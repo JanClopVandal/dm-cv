@@ -121,6 +121,14 @@
     }
     .bio-blocks { display: flex; flex-direction: column; gap: 28px; max-width: 560px; }
     .bio-block .label { font-size: var(--fs-body); color: var(--foreground); margin: 0 0 4px; font-weight: 500; }
+    .affil-link {
+      color: inherit;
+      text-decoration: none;
+      display: inline-block;
+      transform-origin: left center;
+      transition: transform 240ms cubic-bezier(.2,.7,.2,1), color 240ms ease;
+    }
+    .affil-link:hover { transform: scale(1.06); color: var(--accent); }
     .bio-block .value { font-size: var(--fs-body); color: var(--muted-foreground); margin: 0; line-height: 1.55; }
     .bio-block .inline { font-size: var(--fs-body); color: var(--foreground); margin: 0; }
     .bio-block .inline .muted { color: var(--muted-foreground); font-weight: 400; }
@@ -129,13 +137,14 @@
     .bio-contacts a {
       font-size: var(--fs-body);
       font-weight: 600;
-      text-decoration: underline;
-      text-underline-offset: 4px;
+      text-decoration: none;
       color: var(--foreground);
       width: fit-content;
-      transition: opacity 200ms ease;
+      display: inline-block;
+      transform-origin: left center;
+      transition: transform 240ms cubic-bezier(.2,.7,.2,1), color 240ms ease;
     }
-    .bio-contacts a:hover { opacity: 0.65; }
+    .bio-contacts a:hover { transform: scale(1.06); color: var(--accent); }
 
     .bio-photo {
       position: relative;
@@ -399,12 +408,16 @@
 
           <div class="bio-blocks">
             <div class="bio-block reveal" style="--d:220ms">
-              <p class="label">The main tools of the work:</p>
-              <p class="value">Unity, UE, TouchDesigner, Figma, video Ai.</p>
+              <p class="label">
+                <a class="affil-link" href="https://janclopvandal.github.io/Eto_portfolio/" target="_blank" rel="noopener noreferrer">Eto Studio:</a>
+              </p>
+              <p class="value">A multimedia studio building interactive installations,</p>
             </div>
             <div class="bio-block reveal" style="--d:280ms">
-              <p class="label">Additional tools:</p>
-              <p class="value">Unreal engine, Photoshop, Cinema4D, Substance painter, Davinci resolve , Resolume, Bitwig.</p>
+              <p class="label">
+                <a class="affil-link" href="https://www.youtube.com/@Italian_Dogs" target="_blank" rel="noopener noreferrer">Italian Dogs</a>
+              </p>
+              <p class="value">Audio / Visual label</p>
             </div>
             <div class="bio-block reveal" style="--d:340ms">
               <p class="label">Contact:</p>
@@ -412,7 +425,7 @@
                 <a href="https://www.behance.net/matvienkod3102" target="_blank" rel="noopener noreferrer">Behance</a>
                 <a href="https://www.linkedin.com/in/danil-matvienko" target="_blank" rel="noopener noreferrer">linkedin</a>
                 <a href="https://www.instagram.com/danil_matvienko" target="_blank" rel="noopener noreferrer">Instagram</a>
-                <a href="mailto:matvienkodanil@gmail.com">matvienkodanil@gmail.com</a>
+                <a href="/cdn-cgi/l/email-protection#3954584d4f505c5752565d58575055795e54585055175a5654"><span class="__cf_email__" data-cfemail="9df0fce9ebf4f8f3f6f2f9fcf3f4f1ddfaf0fcf4f1b3fef2f0">[email&#160;protected]</span></a>
               </div>
             </div>
           </div>
@@ -485,7 +498,7 @@
     </div>
   </footer>
 
-  <script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
     // ---------- Project data ----------
     const artProjects = [
       { title: "Embodiembient", image: "images/embodiembient.png", description: "An audiovisual live between two artists — sound, light and scaffolding as a single instrument.", href: "https://janclopvandal.github.io/Embodiembient/" },
@@ -588,7 +601,7 @@
 
     // ---------- Snake on standalone targets (e.g. ETO heading) ----------
     (function snakeTargets() {
-      const TICK_MS = 90;
+      const TICK_MS = 160;
       const STEP = 1;
       const active = new Map();
 
@@ -602,15 +615,24 @@
         const period = raw.length + gap.length;
         el.style.minWidth = el.getBoundingClientRect().width + 'px';
         el.style.whiteSpace = 'pre';
-        const id = setInterval(() => {
-          off = (off + STEP) % period;
-          el.textContent = buf.slice(off, off + raw.length);
-        }, TICK_MS);
-        active.set(el, id);
+        // 2s static, then start rotating
+        const timeoutId = setTimeout(() => {
+          const intervalId = setInterval(() => {
+            off = (off + STEP) % period;
+            el.textContent = buf.slice(off, off + raw.length);
+          }, TICK_MS);
+          const rec = active.get(el);
+          if (rec) rec.intervalId = intervalId;
+        }, 1000);
+        active.set(el, { timeoutId });
       }
       function stop(el) {
-        const id = active.get(el);
-        if (id !== undefined) { clearInterval(id); active.delete(el); }
+        const rec = active.get(el);
+        if (rec) {
+          if (rec.timeoutId) clearTimeout(rec.timeoutId);
+          if (rec.intervalId) clearInterval(rec.intervalId);
+          active.delete(el);
+        }
         el.textContent = el.dataset.snakeText || '';
         el.style.minWidth = '';
         el.style.whiteSpace = '';
@@ -625,7 +647,7 @@
 
     // ---------- Snake hover: rotate description text by 1 char ----------
     (function snakeHover() {
-      const TICK_MS = 90;
+      const TICK_MS = 160;
       const STEP = 1; // chars per tick
       const active = new Map(); // ov -> {raw, offset, intervalId}
 
@@ -635,20 +657,24 @@
         if (!span) return;
         const raw = ov.dataset.text || '';
         if (!raw) return;
-        // double-buffer for seamless wrap
         const buf = raw + '   ' + raw + '   ';
         let off = 0;
-        const id = setInterval(() => {
-          off = (off + STEP) % (raw.length + 3);
-          // build rotated string
-          span.textContent = buf.slice(off, off + raw.length + 50);
-        }, TICK_MS);
-        active.set(ov, { id });
+        // 2s static, then start rotating
+        const timeoutId = setTimeout(() => {
+          const intervalId = setInterval(() => {
+            off = (off + STEP) % (raw.length + 3);
+            span.textContent = buf.slice(off, off + raw.length + 50);
+          }, TICK_MS);
+          const rec = active.get(ov);
+          if (rec) rec.intervalId = intervalId;
+        }, 1000);
+        active.set(ov, { timeoutId });
       }
       function stop(ov) {
         const rec = active.get(ov);
         if (rec) {
-          clearInterval(rec.id);
+          if (rec.timeoutId) clearTimeout(rec.timeoutId);
+          if (rec.intervalId) clearInterval(rec.intervalId);
           active.delete(ov);
         }
         const span = ov.firstElementChild;
