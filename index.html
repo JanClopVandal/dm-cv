@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Danil Matvienko — Media Artist / Developer / Producer</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23232323'/%3E%3Ctext x='50%25' y='50%25' dy='.35em' text-anchor='middle' font-family='Courier New,monospace' font-weight='700' font-size='34' fill='%23ADFF00'%3EDM%3C/text%3E%3C/svg%3E" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23C4C4C4'/%3E%3Ctext x='50%25' y='50%25' dy='.35em' text-anchor='middle' font-family='Courier New,monospace' font-weight='700' font-size='34' fill='%23E03131'%3EDM%3C/text%3E%3C/svg%3E" />
   <style>
     /* --- Tokens (mirrors Next.js globals.css) --- */
     :root {
@@ -425,7 +425,7 @@
                 <a href="https://www.behance.net/matvienkod3102" target="_blank" rel="noopener noreferrer">Behance</a>
                 <a href="https://www.linkedin.com/in/danil-matvienko" target="_blank" rel="noopener noreferrer">linkedin</a>
                 <a href="https://www.instagram.com/danil_matvienko" target="_blank" rel="noopener noreferrer">Instagram</a>
-                <a href="/cdn-cgi/l/email-protection#3954584d4f505c5752565d58575055795e54585055175a5654"><span class="__cf_email__" data-cfemail="9df0fce9ebf4f8f3f6f2f9fcf3f4f1ddfaf0fcf4f1b3fef2f0">[email&#160;protected]</span></a>
+                <a href="mailto:matvienkodanil@gmail.com">matvienkodanil@gmail.com</a>
               </div>
             </div>
           </div>
@@ -498,7 +498,7 @@
     </div>
   </footer>
 
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  <script>
     // ---------- Project data ----------
     const artProjects = [
       { title: "Embodiembient", image: "images/embodiembient.png", description: "An audiovisual live between two artists — sound, light and scaffolding as a single instrument.", href: "https://janclopvandal.github.io/Embodiembient/" },
@@ -623,7 +623,7 @@
           }, TICK_MS);
           const rec = active.get(el);
           if (rec) rec.intervalId = intervalId;
-        }, 1000);
+        }, 500);
         active.set(el, { timeoutId });
       }
       function stop(el) {
@@ -667,7 +667,7 @@
           }, TICK_MS);
           const rec = active.get(ov);
           if (rec) rec.intervalId = intervalId;
-        }, 1000);
+        }, 500);
         active.set(ov, { timeoutId });
       }
       function stop(ov) {
