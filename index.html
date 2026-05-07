@@ -86,6 +86,27 @@
     .nav-link:hover { opacity: 0.7; }
     .nav-link.active { color: var(--foreground); font-weight: 500; }
 
+    /* Nav marquee */
+    .nl-track {
+      display: inline-flex;
+      gap: 14px;
+      align-items: center;
+      white-space: nowrap;
+      transform: translateX(0);
+      transition: transform 0.4s linear;
+    }
+    .nl-track .nl-sep { opacity: 0.5; }
+    .nav-link:hover .nl-track {
+      animation: nl-marq 4.5s linear infinite;
+    }
+    @keyframes nl-marq {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .nav-link:hover .nl-track { animation: none; }
+    }
+
     /* --- Bio / About --- */
     .bio {
       position: relative;
@@ -126,9 +147,11 @@
       text-decoration: none;
       display: inline-block;
       transform-origin: left center;
+      transform: translate(var(--mx, 0px), var(--my, 0px)) scale(1);
       transition: transform 240ms cubic-bezier(.2,.7,.2,1), color 240ms ease;
     }
-    .affil-link:hover { transform: scale(1.06); color: var(--accent); }
+    .affil-link:hover { transform: translate(var(--mx, 0px), var(--my, 0px)) scale(1.06); color: var(--accent); }
+    .affil-link.is-magnetic { transition: transform 120ms cubic-bezier(.2,.7,.2,1), color 240ms ease; }
     .bio-block .value { font-size: var(--fs-body); color: var(--muted-foreground); margin: 0; line-height: 1.55; }
     .bio-block .inline { font-size: var(--fs-body); color: var(--foreground); margin: 0; }
     .bio-block .inline .muted { color: var(--muted-foreground); font-weight: 400; }
@@ -142,9 +165,11 @@
       width: fit-content;
       display: inline-block;
       transform-origin: left center;
+      transform: translate(var(--mx, 0px), var(--my, 0px)) scale(1);
       transition: transform 240ms cubic-bezier(.2,.7,.2,1), color 240ms ease;
     }
-    .bio-contacts a:hover { transform: scale(1.06); color: var(--accent); }
+    .bio-contacts a:hover { transform: translate(var(--mx, 0px), var(--my, 0px)) scale(1.06); color: var(--accent); }
+    .bio-contacts a.is-magnetic { transition: transform 120ms cubic-bezier(.2,.7,.2,1), color 240ms ease; }
 
     .bio-photo {
       position: relative;
@@ -356,26 +381,9 @@
       color: var(--muted-foreground);
     }
 
-    /* --- Reveal animations (smooth-scroll micro-interactions) --- */
-    .reveal {
-      opacity: 0;
-      transform: translateY(24px);
-      transition:
-        opacity 700ms cubic-bezier(.2,.7,.2,1),
-        transform 700ms cubic-bezier(.2,.7,.2,1);
-      will-change: opacity, transform;
-    }
-    .reveal.in { opacity: 1; transform: none; }
-
-    /* staggered card reveal */
-    .card.reveal { transition-delay: var(--d, 0ms); }
-
-    /* image clip reveal */
-    .clip-reveal {
-      clip-path: inset(0 0 100% 0);
-      transition: clip-path 900ms cubic-bezier(.2,.7,.2,1);
-    }
-    .clip-reveal.in { clip-path: inset(0 0 0 0); }
+    /* Reveal animations disabled — blocks appear instantly */
+    .reveal { opacity: 1; transform: none; }
+    .clip-reveal { clip-path: none; }
 
     @media (prefers-reduced-motion: reduce) {
       .reveal, .clip-reveal { opacity: 1 !important; transform: none !important; clip-path: none !important; transition: none !important; }
@@ -411,7 +419,8 @@
               <p class="label">
                 <a class="affil-link" href="https://janclopvandal.github.io/Eto_portfolio/" target="_blank" rel="noopener noreferrer">Eto Studio:</a>
               </p>
-              <p class="value">A multimedia studio building interactive installations,</p>
+              <p class="value">A multimedia studio building 
+interactive installations</p>
             </div>
             <div class="bio-block reveal" style="--d:280ms">
               <p class="label">
@@ -432,7 +441,7 @@
         </div>
 
         <div class="bio-photo">
-          <img id="bio-img" src="images/bio-photo.jpg" data-hi="images/hi/bio-photo.jpg" alt="Danil Matvienko" />
+          <img id="bio-img" src="images/bio-photo.jpg" data-hi="images/hi/bio-photo.jpg" alt="Danil Matvienko" style="object-fit: scale-down" />
         </div>
       </div>
     </section>
@@ -440,7 +449,7 @@
     <!-- ===== Art Projects ===== -->
     <section id="art-projects" data-screen-label="02 Art Projects">
       <div class="title-strip reveal">
-        <img src="images/art-projects-title.png" data-hi="images/hi/art-projects-title.png" alt="Art Projects" />
+        <img src="images/art-projects-title.png" data-hi="images/hi/art-projects-title.png" alt="Art Projects" style="object-fit: scale-down; opacity: 0.9" />
       </div>
       <div class="grid grid--art" id="art-grid"></div>
     </section>
@@ -512,10 +521,11 @@
       { title: "Wing", image: "images/wing.jpg", description: "Robotic kinetic sound installation. The anthropomorphism of the industrial robotic arm is complemented by the archaic bird wing. The wing sticks out of the ground, alone large and strong.", href: "https://www.behance.net/gallery/165225475/WING-Robotic-Kinetic-Sound-Installation" },
       { title: "Blood. Glass", image: "images/blood-glass.jpg", description: "The theatrical technological performance based on a 5-hour cycle of actions of three characters — a snake, a man and a typist. The action of the performance creates a space of timelessness and pushes the viewer into a reflective state on the theme of life and death, which are so closely intertwined.", href: "https://www.behance.net/gallery/165210989/BLOOD-GLASS-PERFORMANCE" },
       { title: "Robot Kosty", image: "images/robot-kosty.jpg", description: "Scenic experiment based on the play “The Seagull” by Anton Chekhov. The experiment used robots as actors and part of a creative team as well.", href: "https://www.behance.net/gallery/125782015/Robot-Kostya" },
-      { title: "Room circuits", image: "images/room-circuits.png", description: "DAWless audio jams", href: "https://www.youtube.com/playlist?list=PLVlmhaPiEZzF2pbyiJEmF02h3RJfaXPC7" },
-      { title: "SE Georgia", image: "images/se-georgia.jpg", description: "Sound expedition to Georgian mountains", href: "https://www.youtube.com/watch?v=kyLLupIRs5c" },
-      { title: "SE Morocco", image: "images/hi/se-morocco.jpg", description: "Sound expedition to Morocco ocean", href: "https://www.youtube.com/watch?v=xw-2MpWCIUg" },
       { title: "JTR Tunnel", image: "images/jtr-tunnel.jpg", description: "Sound dirty jam in empty tunnel", href: "https://www.behance.net/gallery/207516785/Italian-Dogs-JtRadio" },
+      { title: "SE Georgia", image: "images/se-georgia.jpg", description: "Sound expedition to Georgian mountains", href: "https://www.youtube.com/watch?v=kyLLupIRs5c" },
+      { title: "SE Dunes", image: "images/se-dunes.jpg", description: "Expedition to TIMALIN DUNES :: down tempo || Konstruktor", href: "https://www.youtube.com/watch?v=PF20Eggk-wI" },
+      { title: "SE Morocco", image: "images/hi/se-morocco.jpg", description: "Sound expedition to Morocco ocean", href: "https://www.youtube.com/watch?v=xw-2MpWCIUg" },
+      { title: "Room circuits", image: "images/room-circuits.png", description: "DAWless audio jams", href: "https://www.youtube.com/playlist?list=PLVlmhaPiEZzF2pbyiJEmF02h3RJfaXPC7" },
     ];
 
     const devProjects = [
@@ -775,6 +785,76 @@
         if (r.top < vh && r.bottom > 0) el.classList.add('in');
       });
     });
+
+    // ---------- Nav marquee (hover ticker) ----------
+    (function navMarquee() {
+      const links = document.querySelectorAll('.nav-link');
+      links.forEach(link => {
+        const txt = (link.dataset.snakeText || link.textContent || '').trim();
+        if (!txt) return;
+        link.classList.remove('snake-target');
+        // freeze width to natural text width, then build a duplicated track
+        const w = link.getBoundingClientRect().width;
+        link.style.width = w + 'px';
+        link.style.overflow = 'hidden';
+        link.style.display = 'inline-block';
+        link.style.verticalAlign = 'middle';
+        link.innerHTML = `<span class="nl-track"><span>${txt}</span><span class="nl-sep">·</span><span>${txt}</span><span class="nl-sep">·</span></span>`;
+      });
+    })();
+
+    // ---------- Magnetic links ----------
+    (function magneticLinks() {
+      const isFine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+      if (!isFine) return;
+
+      const RADIUS = 60;   // px from center where magnet engages
+      const STRENGTH = 0.35; // 0–1; how much the element follows the cursor
+
+      const targets = document.querySelectorAll('.affil-link, .bio-contacts a');
+      targets.forEach(el => {
+        let raf = null;
+        let cx = 0, cy = 0; // current
+        let dx = 0, dy = 0; // desired
+
+        function loop() {
+          cx += (dx - cx) * 0.22;
+          cy += (dy - cy) * 0.22;
+          el.style.setProperty('--mx', cx.toFixed(2) + 'px');
+          el.style.setProperty('--my', cy.toFixed(2) + 'px');
+          if (Math.abs(dx - cx) < 0.05 && Math.abs(dy - cy) < 0.05 && dx === 0 && dy === 0) {
+            cx = 0; cy = 0;
+            el.style.setProperty('--mx', '0px');
+            el.style.setProperty('--my', '0px');
+            el.classList.remove('is-magnetic');
+            raf = null; return;
+          }
+          raf = requestAnimationFrame(loop);
+        }
+        function ensureLoop() { if (!raf) raf = requestAnimationFrame(loop); }
+
+        el.addEventListener('mousemove', (e) => {
+          const r = el.getBoundingClientRect();
+          const ex = r.left + r.width / 2;
+          const ey = r.top + r.height / 2;
+          const mx = e.clientX - ex;
+          const my = e.clientY - ey;
+          const dist = Math.hypot(mx, my);
+          const maxR = Math.max(r.width, r.height) / 2 + RADIUS;
+          if (dist > maxR) { dx = 0; dy = 0; }
+          else {
+            dx = mx * STRENGTH;
+            dy = my * STRENGTH;
+          }
+          el.classList.add('is-magnetic');
+          ensureLoop();
+        });
+        el.addEventListener('mouseleave', () => {
+          dx = 0; dy = 0;
+          ensureLoop();
+        });
+      });
+    })();
   </script>
 </body>
 </html>

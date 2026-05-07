@@ -1,0 +1,16 @@
+feat(portfolio): refine motion, nav marquee, magnetic links, art projects update
+
+- Remove scroll reveal animations (blocks appear instantly)
+- Add hover marquee to nav links (Bio · Bio · ...)
+- Add magnetic effect to bio affiliation/contact links
+- Replace Art Projects title image with new pixel artwork
+- Add SE Dunes project card after SE Georgia
+- Reorder tail of art projects: JTR Tunnel, SE Georgia, SE Dunes, SE Morocco, Room circuits
+- Set Art Projects title image opacity to 0.9
+
+Files changed:
+  Portfolio.html
+  images/art-projects-title.png       (replaced)
+  images/hi/art-projects-title.png    (replaced)
+  images/se-dunes.jpg                 (added)
+  images/hi/se-dunes.jpg              (added)
