@@ -44,68 +44,39 @@
     a { color: inherit; text-decoration: none; }
     img { display: block; max-width: 100%; }
 
-    /* --- Navigation --- */
-    .nav {
-      position: sticky; top: 0; z-index: 50;
-      background: var(--background);
-      transition: background 300ms ease, backdrop-filter 300ms ease;
-    }
-    .nav.scrolled {
-      background: rgba(196, 196, 196, 0.85);
-      backdrop-filter: saturate(140%) blur(8px);
-      -webkit-backdrop-filter: saturate(140%) blur(8px);
-    }
-    .nav-inner {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 18px 24px;
-    }
-    @media (min-width: 768px) { .nav-inner { padding: 18px 40px; } }
-    @media (min-width: 1024px) { .nav-inner { padding: 18px 64px; } }
-    .nav-brand {
-      font-size: var(--fs-nav);
-      letter-spacing: 0.02em;
-      font-weight: 500;
-      color: var(--foreground);
-      transition: opacity 200ms ease;
-    }
-    .nav-brand:hover { opacity: 0.7; }
-    .nav-links {
-      display: flex; align-items: center; gap: 24px;
-      overflow-x: auto;
-      scrollbar-width: none;
-    }
-    .nav-links::-webkit-scrollbar { display: none; }
-    @media (min-width: 768px) { .nav-links { gap: 40px; } }
-    .nav-link {
-      font-size: var(--fs-nav);
-      letter-spacing: 0.02em;
-      color: var(--muted-foreground);
-      white-space: nowrap;
-      transition: opacity 200ms ease, color 200ms ease;
-    }
-    .nav-link:hover { opacity: 0.7; }
-    .nav-link.active { color: var(--foreground); font-weight: 500; }
+    /* --- Navigation removed --- */
 
-    /* Nav marquee */
-    .nl-track {
+    /* --- Scroll-to-top floating button --- */
+    .to-top {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      z-index: 80;
       display: inline-flex;
-      gap: 14px;
       align-items: center;
-      white-space: nowrap;
-      transform: translateX(0);
-      transition: transform 0.4s linear;
+      gap: 8px;
+      padding: 10px 14px;
+      background: var(--foreground);
+      color: var(--background);
+      border: none;
+      font-family: 'VT323', 'Courier New', monospace;
+      font-size: 16px;
+      letter-spacing: 0.08em;
+      line-height: 1;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(8px);
+      pointer-events: none;
+      transition: opacity 240ms ease, transform 240ms cubic-bezier(.2,.7,.2,1), background 200ms ease, color 200ms ease;
+      will-change: opacity, transform;
     }
-    .nl-track .nl-sep { opacity: 0.5; }
-    .nav-link:hover .nl-track {
-      animation: nl-marq 4.5s linear infinite;
+    .to-top.visible { opacity: 1; transform: none; pointer-events: auto; }
+    .to-top:hover { background: var(--accent); color: var(--foreground); }
+    .to-top .to-top-arrow { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; }
+    @media (min-width: 768px) {
+      .to-top { right: 32px; bottom: 32px; padding: 12px 16px; font-size: 17px; }
     }
-    @keyframes nl-marq {
-      from { transform: translateX(0); }
-      to   { transform: translateX(-50%); }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .nav-link:hover .nl-track { animation: none; }
-    }
+
 
     /* --- Bio / About --- */
     .bio {
@@ -254,6 +225,10 @@
       color: #E8E830;
       text-shadow: 0 0 1px rgba(232,232,48,0.5);
     }
+    .grid--produce .card-overlay {
+      color: #FFFFFF;
+      text-shadow: 0 0 1px rgba(255,255,255,0.5);
+    }
     .card-overlay-track {
       display: block;
       width: 100%;
@@ -287,6 +262,7 @@
     /* aspect ratios for the two grids */
     .grid--art .card-image { aspect-ratio: 3 / 4; }
     .grid--dev .card-image { aspect-ratio: 3 / 5; }
+    .grid--produce .card-image { aspect-ratio: 3 / 4; }
 
     /* --- Work experience --- */
     .work-grid {
@@ -393,18 +369,11 @@
 </head>
 <body data-screen-label="01 Portfolio" style="font-size: 18px">
 
-  <!-- ===== Navigation ===== -->
-  <header class="nav" id="nav">
-    <nav class="nav-inner">
-      <a class="nav-brand" href="#" data-scroll-top>Danil Matvienko</a>
-      <div class="nav-links">
-        <a class="nav-link" href="#bio">Bio</a>
-        <a class="nav-link" href="#art-projects">Art Projects</a>
-        <a class="nav-link" href="#development">Development</a>
-        <a class="nav-link" href="#work-experience">Work Experience</a>
-      </div>
-    </nav>
-  </header>
+  <!-- Navigation removed — replaced with floating scroll-to-top button -->
+  <button class="to-top" id="to-top" aria-label="Scroll to top" type="button">
+    <span class="to-top-arrow" aria-hidden="true">↑</span>
+    <span class="to-top-label">TOP</span>
+  </button>
 
   <main>
     <!-- ===== Bio ===== -->
@@ -417,10 +386,9 @@
           <div class="bio-blocks">
             <div class="bio-block reveal" style="--d:220ms">
               <p class="label">
-                <a class="affil-link" href="https://janclopvandal.github.io/Eto_portfolio/" target="_blank" rel="noopener noreferrer">Eto Studio:</a>
+                <a class="affil-link" href="https://janclopvandal.github.io/Eto_portfolio/" target="_blank" rel="noopener noreferrer">Eto:</a>
               </p>
-              <p class="value">A multimedia studio building 
-interactive installations</p>
+              <p class="value">A multimedia studio</p>
             </div>
             <div class="bio-block reveal" style="--d:280ms">
               <p class="label">
@@ -441,7 +409,7 @@ interactive installations</p>
         </div>
 
         <div class="bio-photo">
-          <img id="bio-img" src="images/bio-photo.jpg" data-hi="images/hi/bio-photo.jpg" alt="Danil Matvienko" style="object-fit: scale-down" />
+          <img id="bio-img" src="images/bio-photo.jpg" alt="Danil Matvienko" style="object-fit: scale-down" />
         </div>
       </div>
     </section>
@@ -449,7 +417,7 @@ interactive installations</p>
     <!-- ===== Art Projects ===== -->
     <section id="art-projects" data-screen-label="02 Art Projects">
       <div class="title-strip reveal">
-        <img src="images/art-projects-title.png" data-hi="images/hi/art-projects-title.png" alt="Art Projects" style="object-fit: scale-down; opacity: 0.9" />
+        <img src="images/art-projects-title.png" alt="Art Projects" style="object-fit: scale-down; opacity: 0.9" />
       </div>
       <div class="grid grid--art" id="art-grid"></div>
     </section>
@@ -457,24 +425,32 @@ interactive installations</p>
     <!-- ===== Development ===== -->
     <section id="development" data-screen-label="03 Development">
       <div class="title-strip reveal">
-        <img src="images/development-title.png" data-hi="images/hi/development-title.png" alt="Development" />
+        <img src="images/development-title.png" alt="Development" />
       </div>
       <div class="grid grid--dev" id="dev-grid"></div>
     </section>
 
-    <!-- ===== Work Experience ===== -->
-    <section id="work-experience" data-screen-label="04 Work Experience">
+    <!-- ===== Produce ===== -->
+    <section id="produce" data-screen-label="04 Produce">
       <div class="title-strip reveal">
-        <img src="images/work-experience-title.png" data-hi="images/hi/work-experience-title.png" alt="Work Experience" />
+        <img src="images/produce-title.png" alt="Produce" />
+      </div>
+      <div class="grid grid--produce" id="produce-grid"></div>
+    </section>
+
+    <!-- ===== Work Experience ===== -->
+    <section id="work-experience" data-screen-label="05 Work Experience">
+      <div class="title-strip reveal">
+        <img src="images/work-experience-title.png" alt="Work Experience" />
       </div>
       <div class="work-grid">
         <div class="work-row three">
           <a class="work-cell reveal eto-card" href="https://janclopvandal.github.io/Eto_portfolio/" target="_blank" rel="noopener">
             <h3 class="company snake-target" data-snake-text="“ETO”">“ETO”</h3>
             <p class="role">Technical lead / Art Director</p>
-            <p class="period">2021 — 2025 · Studio development of AR / VR / Web / Mobile applications, games and multimedia installation.</p>
+            <p class="period">2021 — 2026 · Studio development of AR / VR / Web / Mobile applications, games and multimedia installation.</p>
             <ul>
-              <li>Management of a technical and creative team of 5–15 people</li>
+              <li>Management of a technical and creative team</li>
               <li>Maintaining the technical part of the project at all stages of production, from planning to release</li>
               <li>Recruitment of employees</li>
               <li>Communication with outsourcing team</li>
@@ -513,6 +489,7 @@ interactive installations</p>
       { title: "Embodiembient", image: "images/embodiembient.png", description: "An audiovisual live between two artists — sound, light and scaffolding as a single instrument.", href: "https://janclopvandal.github.io/Embodiembient/" },
       { title: "Light Heart", image: "images/light-heart.png", description: "Light Heart is an interactive installation that addresses the image of a tower built in the shape of a heart — a symbol of unification, light and joint action.", href: "https://www.behance.net/gallery/236765613/Light-Heart-interactive-installation" },
       { title: "Dissolve", image: "images/dissolve.jpg", description: "Volumetric Audio-Visual Performance. Captured on a 6-channel spatial sound system with a massive subwoofer, rendered binaurally for immersive headphone listening. Live visuals projected on a volumetric screen — a synesthetic experience of deep frequencies and generative light. Built around low-end energy, the set is designed to resonate with the body during live playback.", href: "https://www.behance.net/gallery/227919605/Dissolve-AV-live" },
+      { title: "Red sunrise", image: "images/red-sunrise.jpg", description: "A/V Live. The fiery sun of awakening is destructive as everyday life. Distorted shapes, motifs, figures. Intervention.", href: "#" },
       { title: "Field", image: "images/field.jpg", description: "An audiovisual VR experience with hints of levitation and epilepsy. Relive the kidnapping of a man in a field. Burning, vibrating, floating.", href: "https://www.behance.net/gallery/219120717/Field-AV-experience" },
       { title: "OT38YK", image: "images/otzvuk.png", description: "The multimedia exhibition \"OTZVUK\" is an attempt to hear and feel the hidden sound life of a Creative Space. The music you will hear is based on detailed recordings of the sounds of the space itself, that is, the objects and materials that fill this particular space.", href: "https://www.behance.net/gallery/247862847/OTZVUK-Media-exhibition" },
       { title: "The Laboratory of Pain", image: "images/laboratory-of-pain.jpg", description: "Theatrical and scientific experiment with neurointerfaces. The sketch of the production was shown on the New Stage of the Alexandrinsky Theater, as well as on the new stage of the Yermolova Theater.", href: "https://www.behance.net/gallery/125792545/laboratorija-boli-ili-k-chemu-privodit-ovidij" },
@@ -521,11 +498,17 @@ interactive installations</p>
       { title: "Wing", image: "images/wing.jpg", description: "Robotic kinetic sound installation. The anthropomorphism of the industrial robotic arm is complemented by the archaic bird wing. The wing sticks out of the ground, alone large and strong.", href: "https://www.behance.net/gallery/165225475/WING-Robotic-Kinetic-Sound-Installation" },
       { title: "Blood. Glass", image: "images/blood-glass.jpg", description: "The theatrical technological performance based on a 5-hour cycle of actions of three characters — a snake, a man and a typist. The action of the performance creates a space of timelessness and pushes the viewer into a reflective state on the theme of life and death, which are so closely intertwined.", href: "https://www.behance.net/gallery/165210989/BLOOD-GLASS-PERFORMANCE" },
       { title: "Robot Kosty", image: "images/robot-kosty.jpg", description: "Scenic experiment based on the play “The Seagull” by Anton Chekhov. The experiment used robots as actors and part of a creative team as well.", href: "https://www.behance.net/gallery/125782015/Robot-Kostya" },
+    ];
+
+    const produceProjects = [
       { title: "JTR Tunnel", image: "images/jtr-tunnel.jpg", description: "Sound dirty jam in empty tunnel", href: "https://www.behance.net/gallery/207516785/Italian-Dogs-JtRadio" },
       { title: "SE Georgia", image: "images/se-georgia.jpg", description: "Sound expedition to Georgian mountains", href: "https://www.youtube.com/watch?v=kyLLupIRs5c" },
       { title: "SE Dunes", image: "images/se-dunes.jpg", description: "Expedition to TIMALIN DUNES :: down tempo || Konstruktor", href: "https://www.youtube.com/watch?v=PF20Eggk-wI" },
-      { title: "SE Morocco", image: "images/hi/se-morocco.jpg", description: "Sound expedition to Morocco ocean", href: "https://www.youtube.com/watch?v=xw-2MpWCIUg" },
+      { title: "SE Morocco", image: "images/se-morocco.jpg", description: "Sound expedition to Morocco ocean", href: "https://www.youtube.com/watch?v=xw-2MpWCIUg" },
       { title: "Room circuits", image: "images/room-circuits.png", description: "DAWless audio jams", href: "https://www.youtube.com/playlist?list=PLVlmhaPiEZzF2pbyiJEmF02h3RJfaXPC7" },
+      { title: "WaterTank", image: "images/water-tank.jpg", description: "industrial live session Tbilisi · JTR :: Episode 8", href: "https://youtu.be/DyTI2hfjw2M?si=1R3kNuvmiWLvfNR1" },
+      { title: "Bridge night", image: "images/bridge-night.jpg", description: ":: Experimental electronic || Konstruktor / Mikl Ders / Elizabeth Ros", href: "https://youtu.be/Q8KDmll5iVs?si=Yin8yqGmY87eE5Nb" },
+      { title: "Consistency", image: "images/consistency.jpg", description: "Uncleboarow | Polina Zinziver | Konstruktor | Саус | Artem Piskov | Philipp Gerasim — New Stage of the Alexandrinsky Theater", href: "#" },
     ];
 
     const devProjects = [
@@ -549,7 +532,7 @@ interactive installations</p>
         }
         a.innerHTML = `
           <div class="card-image">
-            <img src="${p.image}" data-hi="${p.image.replace('images/', 'images/hi/')}" alt="${p.title}" loading="lazy" />
+            <img src="${p.image}" alt="${p.title}" loading="lazy" />
             ${p.description ? `<div class="card-overlay" data-text="${p.description.replace(/"/g, '&quot;')}"><span></span></div>` : ''}
           </div>
           <h3 class="card-title">${p.title}</h3>
@@ -561,6 +544,7 @@ interactive installations</p>
 
     renderGrid('art-grid', artProjects);
     renderGrid('dev-grid', devProjects);
+    renderGrid('produce-grid', produceProjects);
 
     // Inject pixel font
     (function loadPixelFont() {
@@ -707,23 +691,12 @@ interactive installations</p>
     })();
 
     // ---------- Nav: scroll state + active section ----------
-    const nav = document.getElementById('nav');
-    const links = document.querySelectorAll('.nav-link');
-    const sections = ['bio','art-projects','development','work-experience']
-      .map(id => document.getElementById(id));
+    // ---------- Scroll-to-top button ----------
+    const toTopBtn = document.getElementById('to-top');
 
     function onScroll() {
-      nav.classList.toggle('scrolled', window.scrollY > 20);
-
-      // active section: pick last whose top <= 200
-      let current = null;
-      for (const s of sections) {
-        const top = s.getBoundingClientRect().top;
-        if (top <= 200) current = s.id;
-      }
-      links.forEach(l => {
-        l.classList.toggle('active', l.getAttribute('href') === '#' + current);
-      });
+      // show button after a small scroll
+      if (toTopBtn) toTopBtn.classList.toggle('visible', window.scrollY > 300);
 
       // parallax on bio photo
       const bioImg = document.getElementById('bio-img');
@@ -736,11 +709,12 @@ interactive installations</p>
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
 
-    // brand link → top
-    document.querySelector('[data-scroll-top]').addEventListener('click', (e) => {
-      e.preventDefault();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
+    if (toTopBtn) {
+      toTopBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
 
     // ---------- Reveal-on-scroll ----------
     const io = new IntersectionObserver((entries) => {
@@ -754,29 +728,6 @@ interactive installations</p>
 
     document.querySelectorAll('.reveal, .clip-reveal').forEach(el => io.observe(el));
 
-    // ---------- Progressive hi-res upgrade ----------
-    function upgradeToHiRes() {
-      const imgs = Array.from(document.querySelectorAll('img[data-hi]'));
-      imgs.sort((a, b) => Math.abs(a.getBoundingClientRect().top) - Math.abs(b.getBoundingClientRect().top));
-      let i = 0, active = 0;
-      const PARALLEL = 2;
-      function next() {
-        while (active < PARALLEL && i < imgs.length) {
-          const img = imgs[i++];
-          const hi = img.dataset.hi;
-          if (!hi) continue;
-          active++;
-          const pre = new Image();
-          pre.onload = () => { img.src = hi; img.removeAttribute('data-hi'); active--; next(); };
-          pre.onerror = () => { active--; next(); };
-          pre.src = hi;
-        }
-      }
-      next();
-    }
-    if (document.readyState === 'complete') setTimeout(upgradeToHiRes, 300);
-    else window.addEventListener('load', () => setTimeout(upgradeToHiRes, 300));
-
     // Fallback: anything already in viewport on load gets revealed immediately
     requestAnimationFrame(() => {
       const vh = window.innerHeight;
@@ -786,22 +737,7 @@ interactive installations</p>
       });
     });
 
-    // ---------- Nav marquee (hover ticker) ----------
-    (function navMarquee() {
-      const links = document.querySelectorAll('.nav-link');
-      links.forEach(link => {
-        const txt = (link.dataset.snakeText || link.textContent || '').trim();
-        if (!txt) return;
-        link.classList.remove('snake-target');
-        // freeze width to natural text width, then build a duplicated track
-        const w = link.getBoundingClientRect().width;
-        link.style.width = w + 'px';
-        link.style.overflow = 'hidden';
-        link.style.display = 'inline-block';
-        link.style.verticalAlign = 'middle';
-        link.innerHTML = `<span class="nl-track"><span>${txt}</span><span class="nl-sep">·</span><span>${txt}</span><span class="nl-sep">·</span></span>`;
-      });
-    })();
+    // ---------- Nav marquee removed ----------
 
     // ---------- Magnetic links ----------
     (function magneticLinks() {
