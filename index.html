@@ -398,6 +398,25 @@
       transition: opacity 180ms ease, color 180ms ease, background 180ms ease;
     }
     .yt-modal-close:hover { opacity: 1; color: var(--accent); background: rgba(0,0,0,0.9); }
+    .yt-modal-project {
+      position: absolute;
+      bottom: -44px;
+      left: 0;
+      display: none;
+      background: var(--background);
+      color: var(--foreground);
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 7px 12px;
+      opacity: 0.95;
+      transition: opacity 180ms ease, color 180ms ease, background 180ms ease;
+    }
+    .yt-modal-project.visible { display: inline-block; }
+    .yt-modal-project:hover { opacity: 1; color: var(--foreground); background: var(--accent); }
 
     /* --- Footer --- */
     footer {
@@ -536,6 +555,7 @@
     <div class="yt-modal" id="yt-modal">
       <button class="yt-modal-close" id="yt-close" type="button">✕ Close</button>
       <iframe id="yt-iframe" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+      <a class="yt-modal-project" id="yt-project-link" href="#" target="_blank" rel="noopener noreferrer">Full Project →</a>
     </div>
   </div>
 
@@ -553,12 +573,12 @@
       { title: "Light Heart", image: "images/light-heart.png", description: "Light Heart is an interactive installation that addresses the image of a tower built in the shape of a heart — a symbol of unification, light and joint action.", href: "https://janclopvandal.github.io/light_heart_view/" },
       { title: "Dissolve", image: "images/dissolve.jpg", description: "Volumetric Audio-Visual Performance. Captured on a 6-channel spatial sound system with a massive subwoofer, rendered binaurally for immersive headphone listening. Live visuals projected on a volumetric screen — a synesthetic experience of deep frequencies and generative light. Built around low-end energy, the set is designed to resonate with the body during live playback.", href: "https://www.behance.net/gallery/227919605/Dissolve-AV-live" },
       { title: "Red sunrise", image: "images/red-sunrise.jpg", description: "A/V Live. The fiery sun of awakening is destructive as everyday life. Distorted shapes, motifs, figures. Intervention.", href: "#" },
-      { title: "Field", image: "images/field.jpg", description: "An audiovisual VR experience with hints of levitation and epilepsy. Relive the kidnapping of a man in a field. Burning, vibrating, floating.", href: "https://www.behance.net/gallery/219120717/Field-AV-experience" },
+      { title: "Field", image: "images/field.jpg", description: "An audiovisual VR experience with hints of levitation and epilepsy. Relive the kidnapping of a man in a field. Burning, vibrating, floating.", href: "https://www.youtube.com/watch?v=Vf7ihZTA6sY", projectHref: "https://www.behance.net/gallery/219120717/Field-AV-experience" },
       { title: "OT38YK", image: "images/otzvuk.png", description: "The multimedia exhibition \"OTZVUK\" is an attempt to hear and feel the hidden sound life of a Creative Space. The music you will hear is based on detailed recordings of the sounds of the space itself, that is, the objects and materials that fill this particular space.", href: "https://www.behance.net/gallery/247862847/OTZVUK-Media-exhibition" },
       { title: "The Laboratory of Pain", image: "images/laboratory-of-pain.jpg", description: "Theatrical and scientific experiment with neurointerfaces. The sketch of the production was shown on the New Stage of the Alexandrinsky Theater, as well as on the new stage of the Yermolova Theater.", href: "https://www.behance.net/gallery/125792545/laboratorija-boli-ili-k-chemu-privodit-ovidij" },
       { title: "Seance", image: "images/seance.jpg", description: "Theatrical and technological performance using neural networks, lasers and dynamic lighting effects. The neuro-spiritual session sends viewers back to the beginning of the Silver Age, when there were used the ideas of spiritualism and conversations with spirits. With the help of technology, the authors of the performance recreated this atmosphere today.", href: "https://www.behance.net/gallery/165226637/SEANCE-neuro-spiritual-performance" },
       { title: "New absolute", image: "images/new-absolute.jpg", description: "Drawing system created in collaboration with Sense and Misha Most. The prototype of the post processor was written on touchdesigner. In the full bundle of software, the final drawing is created in illustrator.", href: "https://www.behance.net/gallery/160645455/The-New-Absolute-112021" },
-      { title: "Wing", image: "images/wing.jpg", description: "Robotic kinetic sound installation. The anthropomorphism of the industrial robotic arm is complemented by the archaic bird wing. The wing sticks out of the ground, alone large and strong.", href: "https://www.behance.net/gallery/165225475/WING-Robotic-Kinetic-Sound-Installation" },
+      { title: "Wing", image: "images/wing.jpg", description: "Robotic kinetic sound installation. The anthropomorphism of the industrial robotic arm is complemented by the archaic bird wing. The wing sticks out of the ground, alone large and strong.", href: "https://www.youtube.com/watch?v=yZ03xvVtJ90", projectHref: "https://www.behance.net/gallery/165225475/WING-Robotic-Kinetic-Sound-Installation" },
       { title: "Blood. Glass", image: "images/blood-glass.jpg", description: "The theatrical technological performance based on a 5-hour cycle of actions of three characters — a snake, a man and a typist. The action of the performance creates a space of timelessness and pushes the viewer into a reflective state on the theme of life and death, which are so closely intertwined.", href: "https://www.behance.net/gallery/165210989/BLOOD-GLASS-PERFORMANCE" },
       { title: "Robot Kosty", image: "images/robot-kosty.jpg", description: "Scenic experiment based on the play “The Seagull” by Anton Chekhov. The experiment used robots as actors and part of a creative team as well.", href: "https://www.behance.net/gallery/125782015/Robot-Kostya" },
     ];
@@ -568,15 +588,15 @@
       { title: "SE Georgia", image: "images/se-georgia.jpg", description: "Sound expedition to Georgian mountains", href: "https://www.youtube.com/watch?v=kyLLupIRs5c" },
       { title: "SE Dunes", image: "images/se-dunes.jpg", description: "Expedition to TIMALIN DUNES :: down tempo || Konstruktor", href: "https://www.youtube.com/watch?v=PF20Eggk-wI" },
       { title: "SE Morocco", image: "images/se-morocco.jpg", description: "Sound expedition to Morocco ocean", href: "https://www.youtube.com/watch?v=xw-2MpWCIUg" },
-      { title: "Room circuits", image: "images/room-circuits.png", description: "DAWless audio jams", href: "https://www.youtube.com/playlist?list=PLVlmhaPiEZzF2pbyiJEmF02h3RJfaXPC7" },
+      { title: "Room circuits", image: "images/room-circuits.png", description: "DAWless audio jams", href: "https://www.youtube.com/watch?v=vu9Ki5hvAAU" },
       { title: "WaterTank", image: "images/water-tank.jpg", description: "industrial live session Tbilisi · JTR :: Episode 8", href: "https://youtu.be/DyTI2hfjw2M?si=1R3kNuvmiWLvfNR1" },
       { title: "Bridge night", image: "images/bridge-night.jpg", description: ":: Experimental electronic || Konstruktor / Mikl Ders / Elizabeth Ros", href: "https://youtu.be/Q8KDmll5iVs?si=Yin8yqGmY87eE5Nb" },
       { title: "Consistency", image: "images/consistency.jpg", description: "Uncleboarow | Polina Zinziver | Konstruktor | Саус | Artem Piskov | Philipp Gerasim — New Stage of the Alexandrinsky Theater", href: "#" },
     ];
 
     const devProjects = [
-      { title: "Emotion in form", image: "images/emotion-in-form.jpg", description: "A minimalistic text brainteasers game. In which you need to write emotional messages and change state of shapes.", href: "https://www.behance.net/gallery/216715519/Emotion-in-form-text-brainteasers-game" },
-      { title: "OSC Panoram", image: "images/osc-panoram.jpg", description: "MVP / Android / Spatial Sound Control.", href: "https://www.behance.net/gallery/226583373/OSPan-Spatial-Audio-Control-App" },
+      { title: "Emotion in form", image: "images/emotion-in-form.jpg", description: "A minimalistic text brainteasers game. In which you need to write emotional messages and change state of shapes.", href: "https://www.youtube.com/watch?v=0lUoLMcYsfU", projectHref: "https://www.behance.net/gallery/216715519/Emotion-in-form-text-brainteasers-game" },
+      { title: "OSC Panoram", image: "images/osc-panoram.jpg", description: "MVP / Android / Spatial Sound Control.", href: "https://www.youtube.com/watch?v=Z0nmkrDxPgM", projectHref: "https://www.behance.net/gallery/226583373/OSPan-Spatial-Audio-Control-App" },
       { title: "Britanka gallery", image: "images/britanka-gallery.jpg", description: "Which allows anyone anywhere in the world to get acquainted with their diploma collections. Getting into a new virtual world, you will find yourself at a crossroads.", href: "https://www.behance.net/gallery/149029605/Britanka-gallery-mobile-application" },
       { title: "Find Your Calling", image: "images/find-your-calling.jpg", description: "A futuristic photo booth that places the user in the center of a real-time AI analysis. Using computer vision techniques and a language model (LLM API), the system generates a visual and textual profile of the user’s “ideal profession” — with a playful, slightly surreal twist.", href: "https://www.behance.net/gallery/211565145/Meta-Area-VR-Game" },
     ];
@@ -593,6 +613,7 @@
           a.target = '_blank';
           a.rel = 'noopener noreferrer';
         }
+        if (p.projectHref) a.dataset.projectHref = p.projectHref;
         a.innerHTML = `
           <div class="card-image">
             <img src="${p.image}" alt="${p.title}" loading="lazy" />
@@ -810,6 +831,7 @@
       const backdrop = document.getElementById('yt-backdrop');
       const iframe = document.getElementById('yt-iframe');
       const closeBtn = document.getElementById('yt-close');
+      const projectLink = document.getElementById('yt-project-link');
 
       function getEmbedUrl(href) {
         try {
@@ -827,8 +849,15 @@
         return null;
       }
 
-      function openModal(embedUrl) {
+      function openModal(embedUrl, projectHref) {
         iframe.src = embedUrl;
+        if (projectHref) {
+          projectLink.href = projectHref;
+          projectLink.classList.add('visible');
+        } else {
+          projectLink.classList.remove('visible');
+          projectLink.href = '#';
+        }
         backdrop.classList.add('open');
         document.body.style.overflow = 'hidden';
       }
@@ -836,6 +865,7 @@
       function closeModal() {
         backdrop.classList.remove('open');
         iframe.src = '';
+        projectLink.classList.remove('visible');
         document.body.style.overflow = '';
       }
 
@@ -847,7 +877,8 @@
         const embedUrl = getEmbedUrl(href);
         if (!embedUrl) return;
         e.preventDefault();
-        openModal(embedUrl);
+        const projectHref = card.dataset.projectHref || null;
+        openModal(embedUrl, projectHref);
       });
 
       closeBtn.addEventListener('click', closeModal);
