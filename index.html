@@ -345,29 +345,6 @@
     .work-cell .training-stack p { font-size: 16px; line-height: 1.55; margin: 0; }
 
     /* --- YouTube modal --- */
-    .yt-bg-snake {
-      position: absolute;
-      inset: 0;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      padding: 12px 0;
-      z-index: 0;
-      pointer-events: none;
-    }
-    .yt-snake-row {
-      white-space: pre;
-      overflow: hidden;
-      font-family: 'VT323', 'Courier New', monospace;
-      font-size: 28px;
-      color: #ffffff;
-      letter-spacing: 0.04em;
-      line-height: 1.2;
-      opacity: 0.6;
-      text-shadow: 0 0 6px rgba(255,255,255,0.25);
-    }
-
     .yt-modal-backdrop {
       position: fixed;
       inset: 0;
@@ -556,7 +533,6 @@
 
   <!-- YouTube modal (desktop only) -->
   <div class="yt-modal-backdrop" id="yt-backdrop" role="dialog" aria-modal="true" aria-label="Video player">
-    <div class="yt-bg-snake" id="yt-bg-snake"></div>
     <div class="yt-modal" id="yt-modal">
       <button class="yt-modal-close" id="yt-close" type="button">✕ Close</button>
       <iframe id="yt-iframe" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
@@ -834,53 +810,6 @@
       const backdrop = document.getElementById('yt-backdrop');
       const iframe = document.getElementById('yt-iframe');
       const closeBtn = document.getElementById('yt-close');
-      const bgSnake = document.getElementById('yt-bg-snake');
-
-      function buildSnakeBg(text) {
-        bgSnake.innerHTML = '';
-        if (bgSnake._snakeIds) { bgSnake._snakeIds.forEach(clearInterval); bgSnake._snakeIds = null; }
-        if (!text) return;
-
-        const BASE_TICK = 203; // 156ms * 1.3
-        const ROW_PHASE = 6;
-        const GROUPS = 3;
-        const sep = '   ·   ';
-        const unit = text + sep;
-        const buf = unit.repeat(12);
-        const period = unit.length;
-
-        const rowH = 34;
-        const cols = Math.ceil(window.innerWidth / 13) + 12;
-        const rowCount = Math.ceil(window.innerHeight / rowH) + 2;
-
-        const rows = [];
-        for (let i = 0; i < rowCount; i++) {
-          const div = document.createElement('div');
-          div.className = 'yt-snake-row';
-          bgSnake.appendChild(div);
-          rows.push(div);
-        }
-
-        const ids = [];
-        const rowsPerGroup = Math.ceil(rowCount / GROUPS);
-
-        for (let g = 0; g < GROUPS; g++) {
-          const groupRows = rows.slice(g * rowsPerGroup, (g + 1) * rowsPerGroup);
-          let gOff = g * 17; // independent starting phase per group
-          const gTick = BASE_TICK + g * 28; // slightly different speed per group
-
-          const id = setInterval(() => {
-            gOff = (gOff + 1) % period;
-            groupRows.forEach((row, i) => {
-              const start = (gOff + i * ROW_PHASE) % period;
-              row.textContent = buf.slice(start, start + cols);
-            });
-          }, gTick);
-          ids.push(id);
-        }
-
-        bgSnake._snakeIds = ids;
-      }
 
       function getEmbedUrl(href) {
         try {
@@ -898,8 +827,7 @@
         return null;
       }
 
-      function openModal(embedUrl, description) {
-        buildSnakeBg(description);
+      function openModal(embedUrl) {
         iframe.src = embedUrl;
         backdrop.classList.add('open');
         document.body.style.overflow = 'hidden';
@@ -909,8 +837,6 @@
         backdrop.classList.remove('open');
         iframe.src = '';
         document.body.style.overflow = '';
-        if (bgSnake._snakeIds) { bgSnake._snakeIds.forEach(clearInterval); bgSnake._snakeIds = null; }
-        bgSnake.innerHTML = '';
       }
 
       // intercept clicks on cards with YouTube hrefs
@@ -921,9 +847,7 @@
         const embedUrl = getEmbedUrl(href);
         if (!embedUrl) return;
         e.preventDefault();
-        const ov = card.querySelector('.card-overlay');
-        const description = ov ? (ov.dataset.text || '') : '';
-        openModal(embedUrl, description);
+        openModal(embedUrl);
       });
 
       closeBtn.addEventListener('click', closeModal);
